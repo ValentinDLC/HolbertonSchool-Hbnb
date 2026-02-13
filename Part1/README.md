@@ -19,7 +19,7 @@ This document compiles **all diagrams, architecture notes, and API flows** to se
    - [Amenity Management](#amenity-management)  
    - [Admin Management](#admin-management)  
    - [Message Management](#message-management)  
-5. [Senior-Friendly Tips for Beginners](#senior-friendly-tips-for-beginners)  
+5. [Tips](#tips)  
 
 ---
 
@@ -55,6 +55,7 @@ classDiagram
     PresentationLayer --> BusinessLogicLayer : Facade Pattern
     BusinessLogicLayer --> PersistenceLayer : Database Operations
     PersistenceLayer --> MySQL : SQL Access
+```
 
 # Business Logic Layer (BLL)
 
@@ -129,8 +130,9 @@ classDiagram
         +receive()
         +trackReadStatus()
     }
+```
 
-# 🔄 API Interaction Flow
+## API Interaction Flow
 
 Each module below describes API calls, their path through the Business Layer (BL) and repositories, and alternative paths.  
 This document helps visualize how requests move through the system and how errors or loops are handled.
