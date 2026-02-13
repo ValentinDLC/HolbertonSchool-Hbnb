@@ -1,0 +1,81 @@
+classDiagram
+%% ===============================================
+%% PRESENTATION LAYER
+%% ===============================================
+class PresentationLayer {
+    <<Interface / Service API>>
+    +UserAPI.handleRequest()
+    +PlaceAPI.handleRequest()
+    +BookingAPI.handleRequest()
+    +ReviewAPI.handleRequest()
+    +PaymentAPI.handleRequest()
+    +AmenityAPI.handleRequest()
+    +AdminAPI.handleRequest()
+    -- Notes --
+    "Reçoit les requêtes utilisateurs"
+    "Transmet à BusinessLogicLayer"
+}
+
+%% ===============================================
+%% BUSINESS LOGIC LAYER
+%% ===============================================
+class BusinessLogicLayer {
+    +User.create()
+    +Place.create()
+    +Booking.create()
+    +Review.create()
+    +Payment.process()
+    +Amenity.add()
+    +Admin.manage()
+    +UserRating.calculate()
+    +Message.send()
+    #validateData()
+    -internalCache
+    -- Notes --
+    "Applique les règles métier"
+    "Vérifie règles et prépare les données"
+}
+
+%% ===============================================
+%% PERSISTENCE LAYER
+%% ===============================================
+class PersistenceLayer {
+    +UserRepo.save()
+    +UserRepo.update()
+    +UserRepo.delete()
+    +PlaceRepo.save()
+    +PlaceRepo.update()
+    +PlaceRepo.delete()
+    +BookingRepo.save()
+    +BookingRepo.update()
+    +BookingRepo.delete()
+    +ReviewRepo.save()
+    +ReviewRepo.update()
+    +ReviewRepo.delete()
+    +PaymentRepo.save()
+    +PaymentRepo.update()
+    +PaymentRepo.delete()
+    -dbConnection
+    -- Notes --
+    "Gère l’accès à la base de données"
+    "CRUD : Create, Read, Update, Delete"
+}
+
+%% ===============================================
+%% DATABASE
+%% ===============================================
+class MySQL {
+    +Database.connect()
+    +Database.query()
+    +Database.disconnect()
+    -connectionString
+    -- Notes --
+    "Stocke toutes les données"
+}
+
+%% ===============================================
+%% RELATIONS
+%% ===============================================
+PresentationLayer --> BusinessLogicLayer : Facade Pattern
+BusinessLogicLayer --> PersistenceLayer : Database Operations
+PersistenceLayer --> MySQL : SQL Access
