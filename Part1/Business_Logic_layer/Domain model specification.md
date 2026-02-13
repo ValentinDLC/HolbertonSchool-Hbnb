@@ -184,7 +184,6 @@ Represents **communication** between users (or between admin and users).
 
 ---
 
-## 🖼️ Mermaid Diagram 
 ## 🖼️ Mermaid Diagram
 
 ```mermaid
