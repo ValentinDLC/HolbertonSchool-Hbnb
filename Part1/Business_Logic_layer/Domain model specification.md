@@ -185,6 +185,9 @@ Represents **communication** between users (or between admin and users).
 ---
 
 ## 🖼️ Mermaid Diagram 
+## 🖼️ Mermaid Diagram
+
+```mermaid
 classDiagram
 %% ===============================================
 %% Base Model
@@ -361,3 +364,4 @@ Admin "1" --> "*" User : manages
 Place "1" --> "*" PlaceAmenity : links
 Amenity "1" --> "*" PlaceAmenity : links
 User "1" --> "*" UserRole : assigned roles
+```
