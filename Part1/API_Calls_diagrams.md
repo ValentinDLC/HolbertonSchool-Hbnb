@@ -47,6 +47,7 @@ sequenceDiagram
             Facade -->> API: 201 Created + user object
             API -->> User: Success + user_id
         end
+    end
 ```
 
 # 2 Place Creation
