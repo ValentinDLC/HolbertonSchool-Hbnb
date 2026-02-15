@@ -1,3 +1,4 @@
+```mermaid
 flowchart TB
 
     %% ===================
@@ -35,3 +36,4 @@ flowchart TB
     %% ===================
     SVC -->|Calls Facade| FACADE
     MODELS -->|CRUD / Data operations| REPO
+```
