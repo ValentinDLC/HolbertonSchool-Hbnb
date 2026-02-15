@@ -1,3 +1,4 @@
+```mermaid
 classDiagram
 direction TB
 
@@ -93,3 +94,4 @@ direction TB
     style Place fill:#F5F5F5,stroke:#616161,stroke-width:1px,color:#212121
     style Review fill:#F5F5F5,stroke:#616161,stroke-width:1px,color:#212121
     style Amenity fill:#F5F5F5,stroke:#616161,stroke-width:1px,color:#212121
+```
