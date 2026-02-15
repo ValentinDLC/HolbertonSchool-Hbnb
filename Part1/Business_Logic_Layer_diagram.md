@@ -9,64 +9,64 @@ direction TB
         - id : UUID
         - created_at : DateTime
         - updated_at : DateTime
-        #save() void
-        #update() void
-        #delete() void
-        +to_dict() dict
+        # save() void
+        # update() void
+        # delete() void
+        + to_dict() dict
     }
 
     %% ===================
     %% User class
     %% ====================
     class User {
-        +String first_name
-        +String last_name
-        +String email
-        -String password
-        +Boolean is_admin
-        +register() bool
-        +authenticate() bool
-        +add_place(title, description, price, latitude, longitude) bool
-        +add_amenity(name, description) bool
-        +has_reserved(place) bool
-        +add_review(text, rating) bool
+        + String first_name
+        + String last_name
+        + String email
+        - String password
+        + Boolean is_admin
+        + register() bool
+        + authenticate() bool
+        + add_place(title, description, price, latitude, longitude) bool
+        + add_amenity(name, description) bool
+        + has_reserved(place) bool
+        + add_review(text, rating) bool
     }
 
     %% ===================
     %% Place class
     %% ====================
     class Place {
-        +String name
-        +String title
-        +String description
-        +Float price
-        -Float latitude
-        -Float longitude
-        +String owner_id
-        +List~Amenity~ amenities
-        +list_all() List~Place~
-        +get_by_criteria(criteria) List~Place~
-        -get_all_reservation() List
+        + String name
+        + String title
+        + String description
+        + Float price
+        - Float latitude
+        - Float longitude
+        + String owner_id
+        + List~Amenity~ amenities
+        + list_all() List~Place~
+        + get_by_criteria(criteria) List~Place~
+        - get_all_reservation() List
     }
 
     %% ===================
     %% Review class
     %% ====================
     class Review {
-        +String text
-        +Int rating
-        +String user_id
-        +String place_id
-        +list_by_place(place_id) List~Review~
+        + String text
+        + Int rating
+        + String user_id
+        + String place_id
+        + list_by_place(place_id) List~Review~
     }
 
     %% ===================
     %% Amenity class
     %% ====================
     class Amenity {
-        +String name
-        +String description
-        +list_all() List~Amenity~
+        + String name
+        + String description
+        + list_all() List~Amenity~
     }
 
     %% ===================
