@@ -4,9 +4,12 @@
 %%{init: {'theme':'base', 'themeVariables': {
   'actorBkg':'#E3F2FD',
   'actorBorder':'#2196F3',
-  'actorTextColor':'#1565C0',
-  'noteBkgColor':'#FFF9C4',
-  'noteBorderColor':'#FBC02D'
+  'primaryColor':'#E3F2FD',
+  'primaryBorderColor':'#2196F3',
+  'primaryTextColor':'#1565C0',
+  'signalColor':'#2196F3',
+  'signalTextColor':'#FFFFFF',
+  'labelTextColor':'#1565C0'
 }}}%%
 sequenceDiagram
     %% Layers:
@@ -63,9 +66,12 @@ sequenceDiagram
 %%{init: {'theme':'base', 'themeVariables': {
   'actorBkg':'#E3F2FD',
   'actorBorder':'#2196F3',
-  'actorTextColor':'#1565C0',
-  'noteBkgColor':'#FFF9C4',
-  'noteBorderColor':'#FBC02D'
+  'primaryColor':'#E3F2FD',
+  'primaryBorderColor':'#2196F3',
+  'primaryTextColor':'#1565C0',
+  'signalColor':'#2196F3',
+  'signalTextColor':'#FFFFFF',
+  'labelTextColor':'#1565C0'
 }}}%%
 sequenceDiagram
     %% Layers:
@@ -119,9 +125,12 @@ sequenceDiagram
 %%{init: {'theme':'base', 'themeVariables': {
   'actorBkg':'#E3F2FD',
   'actorBorder':'#2196F3',
-  'actorTextColor':'#1565C0',
-  'noteBkgColor':'#FFF9C4',
-  'noteBorderColor':'#FBC02D'
+  'primaryColor':'#E3F2FD',
+  'primaryBorderColor':'#2196F3',
+  'primaryTextColor':'#1565C0',
+  'signalColor':'#2196F3',
+  'signalTextColor':'#FFFFFF',
+  'labelTextColor':'#1565C0'
 }}}%%
 sequenceDiagram
     actor User
@@ -173,9 +182,12 @@ sequenceDiagram
 %%{init: {'theme':'base', 'themeVariables': {
   'actorBkg':'#E3F2FD',
   'actorBorder':'#2196F3',
-  'actorTextColor':'#1565C0',
-  'noteBkgColor':'#FFF9C4',
-  'noteBorderColor':'#FBC02D'
+  'primaryColor':'#E3F2FD',
+  'primaryBorderColor':'#2196F3',
+  'primaryTextColor':'#1565C0',
+  'signalColor':'#2196F3',
+  'signalTextColor':'#FFFFFF',
+  'labelTextColor':'#1565C0'
 }}}%%
 sequenceDiagram
     actor User
