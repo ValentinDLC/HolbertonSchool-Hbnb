@@ -2,14 +2,14 @@
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {
-  'actorBkg':'#E3F2FD',
-  'actorBorder':'#2196F3',
-  'primaryColor':'#E3F2FD',
-  'primaryBorderColor':'#2196F3',
-  'primaryTextColor':'#1565C0',
-  'signalColor':'#2196F3',
+  'actorBkg':'#FFEBEE',
+  'actorBorder':'#E13F3F',
+  'primaryColor':'#FFEBEE',
+  'primaryBorderColor':'#E13F3F',
+  'primaryTextColor':'#B71C1C',
+  'signalColor':'#E13F3F',
   'signalTextColor':'#FFFFFF',
-  'labelTextColor':'#1565C0'
+  'labelTextColor':'#B71C1C'
 }}}%%
 sequenceDiagram
     %% Layers:
@@ -64,14 +64,14 @@ sequenceDiagram
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {
-  'actorBkg':'#E3F2FD',
-  'actorBorder':'#2196F3',
-  'primaryColor':'#E3F2FD',
-  'primaryBorderColor':'#2196F3',
-  'primaryTextColor':'#1565C0',
-  'signalColor':'#2196F3',
+  'actorBkg':'#FFEBEE',
+  'actorBorder':'#E13F3F',
+  'primaryColor':'#FFEBEE',
+  'primaryBorderColor':'#E13F3F',
+  'primaryTextColor':'#B71C1C',
+  'signalColor':'#E13F3F',
   'signalTextColor':'#FFFFFF',
-  'labelTextColor':'#1565C0'
+  'labelTextColor':'#B71C1C'
 }}}%%
 sequenceDiagram
     %% Layers:
@@ -123,14 +123,14 @@ sequenceDiagram
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {
-  'actorBkg':'#E3F2FD',
-  'actorBorder':'#2196F3',
-  'primaryColor':'#E3F2FD',
-  'primaryBorderColor':'#2196F3',
-  'primaryTextColor':'#1565C0',
-  'signalColor':'#2196F3',
+  'actorBkg':'#FFEBEE',
+  'actorBorder':'#E13F3F',
+  'primaryColor':'#FFEBEE',
+  'primaryBorderColor':'#E13F3F',
+  'primaryTextColor':'#B71C1C',
+  'signalColor':'#E13F3F',
   'signalTextColor':'#FFFFFF',
-  'labelTextColor':'#1565C0'
+  'labelTextColor':'#B71C1C'
 }}}%%
 sequenceDiagram
     actor User
@@ -180,14 +180,14 @@ sequenceDiagram
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {
-  'actorBkg':'#E3F2FD',
-  'actorBorder':'#2196F3',
-  'primaryColor':'#E3F2FD',
-  'primaryBorderColor':'#2196F3',
-  'primaryTextColor':'#1565C0',
-  'signalColor':'#2196F3',
+  'actorBkg':'#FFEBEE',
+  'actorBorder':'#E13F3F',
+  'primaryColor':'#FFEBEE',
+  'primaryBorderColor':'#E13F3F',
+  'primaryTextColor':'#B71C1C',
+  'signalColor':'#E13F3F',
   'signalTextColor':'#FFFFFF',
-  'labelTextColor':'#1565C0'
+  'labelTextColor':'#B71C1C'
 }}}%%
 sequenceDiagram
     actor User

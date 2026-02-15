@@ -1,16 +1,15 @@
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': {
-  'primaryColor':'#E3F2FD',
-  'primaryTextColor':'#1565C0',
-  'primaryBorderColor':'#2196F3',
-  'lineColor':'#616161',
-  'secondaryColor':'#F5F5F5',
+  'primaryColor':'#FFEBEE',
+  'primaryTextColor':'#B71C1C',
+  'primaryBorderColor':'#E13F3F',
+  'lineColor':'#E13F3F',
+  'secondaryColor':'#FFF5F5',
   'tertiaryColor':'#FAFAFA',
   'clusterBkg':'#FAFAFA',
-  'clusterBorder':'#9E9E9E'
+  'clusterBorder':'#E13F3F'
 }}}%%
 flowchart TB
-
     %% ===================
     %% Presentation Layer
     %% ===================
