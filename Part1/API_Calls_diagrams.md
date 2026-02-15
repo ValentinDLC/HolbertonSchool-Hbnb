@@ -1,18 +1,25 @@
 # 1 User Registration
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {
+  'actorBkg':'#E3F2FD',
+  'actorBorder':'#2196F3',
+  'actorTextColor':'#1565C0',
+  'noteBkgColor':'#FFF9C4',
+  'noteBorderColor':'#FBC02D'
+}}}%%
 sequenceDiagram
     %% Layers:
     %% Presentation: User, API
     %% Business Logic: Facade, BusinessLogic, Repository
-    %% Persistence: Persistence
+    %% Persistence: Database
 
     actor User
     participant API as API (Presentation Layer)
-    participant Facade as "Facade pattern"
+    participant Facade as Facade
     participant BusinessLogic as Business Logic
-    participant Repository as "Repository (Interface)"
-    participant Persistence as Persistence Layer
+    participant Repository as Repository (Interface)
+    participant Database as Database
 
     User ->> API: POST /users with data
     API ->> Facade: create_user(data)
@@ -31,17 +38,17 @@ sequenceDiagram
         API -->> User: Email already in use
     else "Valid data"
         Facade ->> BusinessLogic: create_user_instance(data)
-        BusinessLogic --> BusinessLogic: User(user_data)  # Création de l'instance
+        BusinessLogic --> BusinessLogic: User(user_data)
         BusinessLogic ->> Repository: save(user)
-        Repository ->> Persistence: insert_user(user)
-        alt "Persistence error"
-            Persistence -->> Repository: 500 Internal Server Error
+        Repository ->> Database: INSERT user
+        alt "Database error"
+            Database -->> Repository: 500 Internal Server Error
             Repository -->> BusinessLogic: Persistence failed
             BusinessLogic -->> Facade: 500 Internal Server Error
             Facade -->> API: 500 Internal Server Error
             API -->> User: An error occurred, please try again
-        else "Persistence success"
-            Persistence -->> Repository: OK + user_id
+        else "Success"
+            Database -->> Repository: OK + user_id
             Repository -->> BusinessLogic: User saved + user_id
             BusinessLogic -->> Facade: return user + user_id
             Facade -->> API: 201 Created + user object
@@ -53,18 +60,25 @@ sequenceDiagram
 # 2 Place Creation
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {
+  'actorBkg':'#E3F2FD',
+  'actorBorder':'#2196F3',
+  'actorTextColor':'#1565C0',
+  'noteBkgColor':'#FFF9C4',
+  'noteBorderColor':'#FBC02D'
+}}}%%
 sequenceDiagram
     %% Layers:
     %% Presentation: User, API
-    %% Business Logic: Facade, PlaceLogic, PlaceRepository
+    %% Business Logic: Facade, PlaceLogic, Repository
     %% Persistence: Database
 
     actor User
     participant API as API (Presentation Layer)
     participant Facade as Facade
     participant PlaceLogic as Business Logic
-    participant PlaceRepository as Repository (Interface)
-    participant Database as Persistence
+    participant Repository as Repository (Interface)
+    participant Database as Database
 
     User ->> API: POST /places with place data
     API ->> Facade: create_place(data)
@@ -80,19 +94,19 @@ sequenceDiagram
         API -->> User: Provide valid amenities
     else Valid data
         Facade ->> PlaceLogic: validate and build place
-        PlaceLogic --> PlaceLogic: Place(place_data)  # Création de l'instance
-        PlaceLogic ->> PlaceRepository: save(place_object)
-        PlaceRepository ->> Database: INSERT place_object
-        alt Persistence error
-            Database -->> PlaceRepository: 500 Internal Server Error
-            PlaceRepository -->> PlaceLogic: Persistence failed
+        PlaceLogic --> PlaceLogic: Place(place_data)
+        PlaceLogic ->> Repository: save(place_object)
+        Repository ->> Database: INSERT place
+        alt Database error
+            Database -->> Repository: 500 Internal Server Error
+            Repository -->> PlaceLogic: Persistence failed
             PlaceLogic -->> Facade: 500 Internal Server Error
             Facade -->> API: 500 Internal Server Error
             API -->> User: An error occurred, please try again
-        else Persistence success
-            Database -->> PlaceRepository: OK
-            PlaceRepository -->> PlaceLogic: Place saved
-            PlaceLogic -->> Facade: Return place_id
+        else Success
+            Database -->> Repository: OK + place_id
+            Repository -->> PlaceLogic: Place saved + place_id
+            PlaceLogic -->> Facade: Return place object
             Facade -->> API: 201 Created + place info
             API -->> User: Place successfully created
         end
@@ -102,13 +116,20 @@ sequenceDiagram
 # 3 Review Submission
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {
+  'actorBkg':'#E3F2FD',
+  'actorBorder':'#2196F3',
+  'actorTextColor':'#1565C0',
+  'noteBkgColor':'#FFF9C4',
+  'noteBorderColor':'#FBC02D'
+}}}%%
 sequenceDiagram
     actor User
     participant API as API (Presentation)
-    participant Facade
+    participant Facade as Facade
     participant Logic as Business Logic
-    participant Repo as Repository (interface)
-    participant DB as Persistence
+    participant Repository as Repository (Interface)
+    participant Database as Database
 
     User ->> API: POST /reviews with data
     API ->> Facade: create_review(data)
@@ -118,28 +139,28 @@ sequenceDiagram
         API -->> User: Review data invalid
     else No reservation
         Facade ->> Logic: validate_reservation(user_id, place_id)
-        Logic ->> Repo: check_reservation(user_id, place_id)
-        Repo ->> DB: query_reservation()
-        DB -->> Repo: No match
-        Repo -->> Logic: Forbidden
+        Logic ->> Repository: check_reservation(user_id, place_id)
+        Repository ->> Database: SELECT reservation
+        Database -->> Repository: No match
+        Repository -->> Logic: Forbidden
         Logic -->> Facade: 403 Forbidden
         Facade -->> API: Review not allowed
         API -->> User: Must reserve place first
     else Valid input + reserved
         Facade ->> Logic: create_review_instance(data)
-        Logic --> Logic: Review(data)  # Création de l'instance
-        Logic ->> Repo: save(review)
-        Repo ->> DB: insert_review()
-        alt Persistence error
-            DB -->> Repo: 500 Internal Server Error
-            Repo -->> Logic: Persistence failed
+        Logic --> Logic: Review(data)
+        Logic ->> Repository: save(review)
+        Repository ->> Database: INSERT review
+        alt Database error
+            Database -->> Repository: 500 Internal Server Error
+            Repository -->> Logic: Persistence failed
             Logic -->> Facade: 500 Internal Server Error
             Facade -->> API: 500 Internal Server Error
             API -->> User: An error occurred, please try again
-        else Persistence success
-            DB -->> Repo: OK
-            Repo -->> Logic: Done
-            Logic -->> Facade: review object (id, rating, comment, date)
+        else Success
+            Database -->> Repository: OK + review_id
+            Repository -->> Logic: Review saved + review_id
+            Logic -->> Facade: review object (id, rating, text, date)
             Facade -->> API: 201 Created
             API -->> User: Review submitted
         end
@@ -149,13 +170,20 @@ sequenceDiagram
 # 4 Fetching List of Places
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {
+  'actorBkg':'#E3F2FD',
+  'actorBorder':'#2196F3',
+  'actorTextColor':'#1565C0',
+  'noteBkgColor':'#FFF9C4',
+  'noteBorderColor':'#FBC02D'
+}}}%%
 sequenceDiagram
-    actor User as User
-    participant API as Presentation (API)
+    actor User
+    participant API as API (Presentation)
     participant Facade as Facade
     participant BusinessLogic as Business Logic
     participant Repository as Repository (Interface)
-    participant Database as Persistence
+    participant Database as Database
 
     User->>API: GET /api/v1/places?filters
 
@@ -163,11 +191,11 @@ sequenceDiagram
         API-->>User: 400 Bad Request
     else Authentication/Authorization error
         API-->>User: 401 Unauthorized / 403 Forbidden
-    else
-        API->>Facade: getPlaces(filters)
-        Facade->>BusinessLogic: getPlaces(filters)
-        BusinessLogic->>Repository: findPlaces(query)
-        Repository->>Database: SELECT ... WHERE ...
+    else Valid request
+        API->>Facade: get_places(filters)
+        Facade->>BusinessLogic: get_places(filters)
+        BusinessLogic->>Repository: find_places(query)
+        Repository->>Database: SELECT * FROM places WHERE ...
 
         alt Database error
             Database-->>Repository: SQL Error
@@ -177,16 +205,16 @@ sequenceDiagram
             API-->>User: 500 Internal Server Error
         else No results found
             Database-->>Repository: Empty ResultSet
-            Repository-->>BusinessLogic: Empty ResultSet
+            Repository-->>BusinessLogic: Empty list
             BusinessLogic-->>Facade: PlaceCollectionDTO (empty list, metadata)
             Facade-->>API: PlaceCollectionDTO
             API-->>User: 200 OK (empty list)
         else Results found
             Database-->>Repository: ResultSet
-            Repository-->>BusinessLogic: ResultSet
+            Repository-->>BusinessLogic: List of Place objects
             BusinessLogic-->>Facade: PlaceCollectionDTO (list, metadata)
             Facade-->>API: PlaceCollectionDTO
-            API-->>User: 200 OK (+ body)
+            API-->>User: 200 OK + places data
         end
     end
 ```
