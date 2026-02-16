@@ -1,3 +1,6 @@
+# Domain Model – Class Diagram
+
+```mermaid
 classDiagram
 %% ===============================================
 %% BASE MODEL (Abstract shared class)
@@ -13,7 +16,7 @@ class BaseModel {
 }
 
 %% ===============================================
-%% USER MODEL (Users)
+%% USER MODEL
 %% ===============================================
 class User {
     <<entity>>
@@ -32,7 +35,7 @@ class User {
 }
 
 %% ===============================================
-%% PLACE MODEL (Accommodations)
+%% PLACE MODEL
 %% ===============================================
 class Place {
     <<entity>>
@@ -53,7 +56,7 @@ class Place {
 }
 
 %% ===============================================
-%% BOOKING MODEL (Reservations)
+%% BOOKING MODEL
 %% ===============================================
 class Booking {
     <<entity>>
@@ -73,7 +76,7 @@ class Booking {
 }
 
 %% ===============================================
-%% REVIEW MODEL (Reviews)
+%% REVIEW MODEL
 %% ===============================================
 class Review {
     <<entity>>
@@ -91,7 +94,7 @@ class Review {
 }
 
 %% ===============================================
-%% AMENITY MODEL (Amenities)
+%% AMENITY MODEL
 %% ===============================================
 class Amenity {
     <<entity>>
@@ -115,25 +118,23 @@ BaseModel <|-- Amenity
 %% ===============================================
 %% RELATIONSHIPS
 %% ===============================================
-%% User relationships
 User "1" --o "*" Place : owns
 User "1" --o "*" Booking : makes
 User "1" --o "*" Review : writes
 
-%% Place relationships
 Place "1" --o "*" Booking : receives
 Place "1" --o "*" Review : has
 Place "*" --o "*" Amenity : includes
 
-%% Booking relationships
 Booking "1" --o "0..1" Review : generates
 
 %% ===============================================
-%% EXPLANATORY NOTES
+%% NOTES
 %% ===============================================
-note for BaseModel "Abstract class shared by all entities.Contains common attributes: id, createdAt, updatedAt"
-note for User "Manages authentication, roles (user/admin) and user profiles"
-note for Place "Manages accommodations with price, GPS location and availability"
-note for Booking "Orchestrates reservations with statuses (pending, confirmed, cancelled, completed)"
-note for Review "Validates reviews (rating 1-5, comment min 10 chars) and updates place ratings"
-note for Amenity "Manages amenities (WiFi, Pool, etc.) with unique names"
+note for BaseModel "Abstract class shared by all entities. Contains id + timestamps"
+note for User "Authentication, roles, and profile management"
+note for Place "Accommodation management with pricing and GPS"
+note for Booking "Reservation lifecycle and status handling"
+note for Review "Rating validation and ownership checks"
+note for Amenity "Unique amenity catalog (WiFi, Pool, etc.)"
+```

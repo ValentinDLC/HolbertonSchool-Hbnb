@@ -1,3 +1,6 @@
+# Amenity API — Sequence Diagram
+
+```mermaid
 sequenceDiagram
     participant User as User (Presentation)
     participant API as API Layer (Presentation)
@@ -165,3 +168,4 @@ sequenceDiagram
     Repo-->>BL: success(count)
     BL-->>API: created + skipped
     API-->>User: 201 Created {created, skipped}
+```

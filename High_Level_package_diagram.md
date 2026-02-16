@@ -1,3 +1,6 @@
+# Architecture – Layered System Diagram
+
+```mermaid
 classDiagram
 %% ===============================================
 %% PRESENTATION LAYER
@@ -103,6 +106,10 @@ PersistenceLayer --> Database : executes SQL queries
 %% NOTES
 %% ===============================================
 note for PresentationLayer "API Layer (HTTP Interface)\n- Receives HTTP requests\n- Validates JWT tokens\n- Checks user roles\n- Returns HTTP responses"
+
 note for BusinessLogicLayer "Business Logic Layer\n- Validates data\n- Applies business rules\n- Enforces constraints\n- Manages workflows"
+
 note for PersistenceLayer "Data Access Layer\n- Handles CRUD operations\n- Manages database queries\n- Abstracts data storage"
-note for Database "Database Layer (MySQL)\n- Stores data permanently\n- Tables: users, places, bookings\n  reviews, amenities, place_amenities\n- Manages transactions"
+
+note for Database "Database Layer (MySQL)\n- Stores data permanently\n- Tables: users, places, bookings, reviews, amenities, place_amenities\n- Manages transactions"
+```

@@ -1,3 +1,6 @@
+# Booking API — Sequence Diagram
+
+```mermaid
 sequenceDiagram
     participant User as User (Presentation)
     participant API as API Layer (Presentation)
@@ -186,3 +189,4 @@ sequenceDiagram
     Repo-->>BL: updated_booking
     BL-->>API: updated_booking
     API-->>User: 200 OK {booking completed}
+```

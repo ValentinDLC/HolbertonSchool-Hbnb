@@ -1,3 +1,6 @@
+# Reviews API — Sequence Diagram
+
+```mermaid
 sequenceDiagram
     participant User as User (Presentation)
     participant API as API Layer (Presentation)
@@ -160,3 +163,4 @@ sequenceDiagram
     Repo-->>BL: reviews[]
     BL-->>API: reviews[]
     API-->>User: 200 OK {reviews[]}
+```
