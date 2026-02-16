@@ -1,0 +1,45 @@
+classDiagram
+    class BaseModel {
+        +String id
+        +DateTime created_at
+        +DateTime updated_at
+        +save()
+        +update()
+    }
+
+    class User {
+        +String first_name
+        +String last_name
+        +String email
+        +String password
+        +Boolean is_admin
+        +register()
+        +update_profile()
+    }
+
+    class Place {
+        +String title
+        +String description
+        +Float price
+        +Float latitude
+        +Float longitude
+        +create()
+        +list_all()
+    }
+
+    class Review {
+        +String text
+        +Int rating
+        +post()
+    }
+
+    class Amenity {
+        +String name
+        +String description
+    }
+
+    %% Héritage
+    BaseModel <|-- User
+    BaseModel <|-- Place
+    BaseModel <|-- Review
+    BaseModel <|-- Amenity
