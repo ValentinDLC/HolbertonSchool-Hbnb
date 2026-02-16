@@ -16,6 +16,45 @@ This blueprint ensures a structured approach to development, facilitating mainta
 
 ## 2. High-Level Architecture
 
+```mermaid
+flowchart TB
+    %% ===================
+    %% Presentation Layer
+    %% ===================
+    subgraph P["Presentation Layer"]
+        direction TB
+        API["API / Endpoints\n(Controllers / Routes)\n- POST /users\n- POST /places\n- POST /reviews\n- GET /places"]
+        SVC["Services\n(Request handling)"]
+        API --> SVC
+    end
+
+    %% ===================
+    %% Business Logic Layer
+    %% ===================
+    subgraph B["Business Logic Layer"]
+        direction TB
+        FACADE["HBnB Facade\n(Unified interface)\n- create_user()\n- create_place()\n- create_review()\n- get_places()"]
+        MODELS["Domain Models\n(User, Place, Review, Amenity)\n+ Business Rules\n+ Validation"]
+        FACADE --> MODELS
+    end
+
+    %% ===================
+    %% Persistence Layer
+    %% ===================
+    subgraph D["Persistence Layer"]
+        direction TB
+        REPO["Repository (Interface)\n(Data access abstraction)\n- save()\n- findById()\n- findAll()\n- update()\n- delete()"]
+        DB["Database\n(Persistent storage)"]
+        REPO --> DB
+    end
+
+    %% ===================
+    %% Layer Communication (Dependencies)
+    %% ===================
+    SVC -->|Calls Facade| FACADE
+    MODELS -->|CRUD operations| REPO
+```
+
 The HBnB application is built on a **Layered Architecture** (3-tier) using the **Facade Design Pattern**. This structure ensures that each layer has a specific responsibility and interacts with others through well-defined interfaces.
 
 ### Package Diagram
