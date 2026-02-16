@@ -19,7 +19,7 @@ The HBnB application is built on a **Layered Architecture** (3-tier) using the *
 
 ### Package Diagram
 
-![High-Level Package Diagram](images/package_diagram.png)
+![High-Level Package Diagram](all diagrams/Detailed Class Diagram for Business Logic Layer.png)
 
 ### Explanatory Notes
 * **Presentation Layer:** The entry point for users via the `ServiceAPI`. It handles HTTP requests and responses but contains no business logic. It delegates all processing to the Business Logic Layer.
