@@ -36,7 +36,7 @@ The detailed class diagram represents the core entities of the application and t
 
 ### Class Diagram
 
-![Business Logic Class Diagram](./images/class_diagram.png)
+![Business Logic Class Diagram](./all_diagrams/Class_Diagram_Business_Logic_Layer.png)
 
 ### Explanatory Notes
 
@@ -57,7 +57,7 @@ The following sequence diagrams illustrate how the three layers interact to fulf
 
 This flow demonstrates the creation of a new user, highlighting the validation logic within the Business Layer.
 
-![User Registration Sequence Diagram](./images/seq_user_registration.png)
+![User Registration Sequence Diagram](./all_diagrams/User.md)
 
 - **Note:** The API handles the request format, but the `HBnBFacade` enforces rules (e.g., unique email) and security (password hashing) before asking the Persistence layer to save.
 
@@ -65,7 +65,7 @@ This flow demonstrates the creation of a new user, highlighting the validation l
 
 This flow shows how a logged-in user creates a listing.
 
-![Place Creation Sequence Diagram](./images/seq_place_creation.png)
+![Place Creation Sequence Diagram](./all_diagrams/Place.md)
 
 - **Note:** Authentication (JWT verification) usually happens at the API level (or middleware) to protect the Business Logic. The Facade then links the new Place to the authenticated Owner.
 
@@ -73,7 +73,7 @@ This flow shows how a logged-in user creates a listing.
 
 This flow illustrates the interaction involving multiple entities (User, Place, Review).
 
-![Review Submission Sequence Diagram](./images/seq_review_submission.png)
+![Review Submission Sequence Diagram](./all_diagrams/Review.md)
 
 - **Note:** The Facade acts as the orchestrator. It ensures the `Place` exists and the data is valid before allowing the persistence of the `Review`.
 
