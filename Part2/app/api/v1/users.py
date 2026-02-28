@@ -1,7 +1,7 @@
 # api/v1/users.py
 from flask import request, jsonify
 from flask_restx import Namespace, Resource, abort
-from app.services.facade import facade
+from app.services import facade
 
 api = Namespace('users', description='User operations')
 
