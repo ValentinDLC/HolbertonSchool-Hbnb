@@ -3,7 +3,6 @@ from app.services import facade
 
 api = Namespace('places', description='Opérations sur les lieux (Places)')
 
-# POST
 place_model = api.model('Place', {
     'title': fields.String(required=True, description="Le titre du lieu"),
     'description': fields.String(description="La description du lieu"),
@@ -26,22 +25,22 @@ class PlaceList(Resource):
         try:
             new_place = facade.create_place(api.payload)
             return {
-                'id': new_place.id, 
-                'title': new_place.title, 
+                'id': new_place.id,
+                'title': new_place.title,
                 'price': new_place.price,
-                'owner_id': new_place.owner.id
+                'owner_id': new_place.owner_id
             }, 201
         except ValueError as e:
-            return {'error': str(e)}, 400 # Gère l'erreur 400
+            return {'error': str(e)}, 400
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
     def get(self, place_id):
-        """Récupérer un lieu via son ID (avec propriétaire et équipements)"""
+        """Récupérer un lieu via son ID"""
         place = facade.get_place(place_id)
         if not place:
-            return {'error': 'Lieu non trouvé'}, 404 # Gère l'erreur 404
-        
+            return {'error': 'Lieu non trouvé'}, 404
+        owner = facade.get_user(place.owner_id)
         return {
             'id': place.id,
             'title': place.title,
@@ -50,11 +49,11 @@ class PlaceResource(Resource):
             'latitude': place.latitude,
             'longitude': place.longitude,
             'owner': {
-                'id': place.owner.id,
-                'first_name': place.owner.first_name,
-                'last_name': place.owner.last_name
-            },
-            'amenities': [{'id': a.id, 'name': a.name} for a in place.amenities]
+                'id': owner.id,
+                'first_name': owner.first_name,
+                'last_name': owner.last_name
+            } if owner else None,
+            'amenities': place.amenities
         }, 200
 
     @api.expect(place_model)
