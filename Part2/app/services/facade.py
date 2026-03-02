@@ -1,7 +1,7 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
-from app.models.amenity import Amenity
 from app.models.place import Place
+from app.models.amenity import Amenity
 from app.models.review import Review
 from app.models.booking import Booking
 
@@ -9,11 +9,11 @@ class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
         self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
+        self.review_repo = InMemoryRepository()
         self.booking_repo = InMemoryRepository()
-        
-    
+
+
      # ── User ──────────────────────────────────────────────────────────────────
 
     def create_user(self, user_data: dict):
@@ -32,7 +32,7 @@ class HBnBFacade:
 
     def update_user(self, user_id: str, data: dict):
         self.user_repo.update(user_id, data)
-    
+
     # méthode amentity
 
     def create_amenity(self, amenity_data):
@@ -55,7 +55,7 @@ class HBnBFacade:
     def create_place(self, place_data):
         owner_id = place_data.get('owner_id')
         owner = self.user_repo.get(owner_id)
-        
+
         if not owner:
             raise ValueError("Le propriétaire spécifié n'existe pas.")
 
@@ -68,7 +68,7 @@ class HBnBFacade:
             longitude=place_data['longitude'],
             owner_id=owner_id
         )
-        
+
         self.place_repo.add(place)
         return place
 
@@ -81,7 +81,7 @@ class HBnBFacade:
     def update_place(self, place_id, place_data):
         self.place_repo.update(place_id, place_data)
         return self.get_place(place_id)
-    
+
     # ── Review ────────────────────────────────────────────────────────────────
 
     def create_review(self, review_data: dict):
@@ -103,7 +103,7 @@ class HBnBFacade:
 
     def delete_review(self, review_id: str):
         self.review_repo.delete(review_id)
-        
+
     # ── Booking ───────────────────────────────────────────────────────────────
 
     def create_booking(self, booking_data: dict):
