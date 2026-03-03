@@ -1,5 +1,5 @@
 from datetime import date
-from app.models.base_model import BaseModel
+from app.models import BaseModel
 
 
 class Booking(BaseModel):
