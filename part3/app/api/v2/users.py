@@ -47,22 +47,29 @@ class UserResource(Resource):
     @jwt_required()
     @api.expect(user_model)
     @api.response(200, 'User updated successfully')
+    @api.response(400, 'Validation error')
     @api.response(403, 'Unauthorized action')
     @api.response(404, 'User not found')
     def put(self, user_id):
-        """Update a user — admin"""
+        """Update a user — soi-même ou admin"""
+        current_user_id = get_jwt_identity()
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
+
         user = facade.get_user(user_id)
         if not user:
             api.abort(404, 'User not found')
 
-        current_user_id = get_jwt_identity()
-        claims = get_jwt()
-
-        if current_user_id != user_id and not claims.get('is_admin', False):
+        if current_user_id != user_id and not is_admin:
             api.abort(403, 'Unauthorized action')
+
+        if not is_admin:
+            if 'email' in api.payload or 'password' in api.payload:
+                api.abort(400, 'You cannot modify email or password')
 
         try:
             facade.update_user(user_id, api.payload)
         except ValueError as e:
             api.abort(400, str(e))
         return facade.get_user(user_id).to_dict(), 200
+    

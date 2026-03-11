@@ -18,10 +18,9 @@ class PlaceList(Resource):
     @jwt_required()
     @api.expect(place_model, validate=True)
     @api.response(201, 'Place created')
-    @api.response(400, 'Validation error')
     @api.response(401, 'Missing or invalid token')
     def post(self):
-        """Create a new place"""
+        """Create a new place — authentifié requis"""
         current_user_id = get_jwt_identity()
         data = api.payload
         data['owner_id'] = current_user_id
@@ -61,7 +60,7 @@ class PlaceResource(Resource):
     @api.response(403, 'Unauthorized action')
     @api.response(404, 'Place not found')
     def put(self, place_id):
-        """Update a place — owner"""
+        """Update a place — owner ou admin"""
         place = facade.get_place(place_id)
         if not place:
             api.abort(404, 'Place not found')
@@ -80,3 +79,4 @@ class PlaceResource(Resource):
         updated = facade.get_place(place_id)
         owner = facade.get_user(updated.owner_id)
         return updated.to_dict(include_owner=True, owner=owner), 200
+    

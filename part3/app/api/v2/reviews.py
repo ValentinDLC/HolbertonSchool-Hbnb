@@ -17,13 +17,22 @@ class ReviewList(Resource):
     @api.response(201, 'Review created')
     @api.response(400, 'Validation error')
     def post(self):
-        """Create a new review"""
+        """Create a new review — authentifié requis"""
         current_user_id = get_jwt_identity()
         data = api.payload
         data['user_id'] = current_user_id
 
-        if not facade.get_place(data['place_id']):
+        place = facade.get_place(data['place_id'])
+        if not place:
             api.abort(400, 'Place not found')
+
+        if place.owner_id == current_user_id:
+            api.abort(400, 'You cannot review your own place')
+
+        existing = facade.get_reviews_by_place(data['place_id'])
+        if any(r.user_id == current_user_id for r in existing):
+            api.abort(400, 'You have already reviewed this place')
+
         try:
             review = facade.create_review(data)
         except ValueError as e:
@@ -53,7 +62,7 @@ class ReviewResource(Resource):
     @api.response(403, 'Unauthorized action')
     @api.response(404, 'Review not found')
     def put(self, review_id):
-        """Update a review"""
+        """Update a review — auteur ou admin"""
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, 'Review not found')
@@ -75,7 +84,7 @@ class ReviewResource(Resource):
     @api.response(403, 'Unauthorized action')
     @api.response(404, 'Review not found')
     def delete(self, review_id):
-        """Delete a review — admin"""
+        """Delete a review — auteur ou admin"""
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, 'Review not found')
@@ -99,3 +108,4 @@ class PlaceReviewList(Resource):
         if not facade.get_place(place_id):
             api.abort(404, 'Place not found')
         return [r.to_dict() for r in facade.get_reviews_by_place(place_id)], 200
+    
