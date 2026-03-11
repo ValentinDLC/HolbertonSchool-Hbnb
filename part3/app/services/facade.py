@@ -1,21 +1,19 @@
-from app.persistence.repository import InMemoryRepository
+from app.persistence.repository import SQLAlchemyRepository
 
 
 class HBnBFacade:
-    """
-    Single point of contact between the Presentation layer (API) and the
-    Persistence layer (repositories).
-
-    All create_* methods now simply unpack the incoming dict with **kwargs,
-    so adding a new field to a model requires no changes here.
-    """
-
     def __init__(self):
-        self.user_repo    = InMemoryRepository()
-        self.place_repo   = InMemoryRepository()
-        self.review_repo  = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
-        self.booking_repo = InMemoryRepository()
+        from app.models.user import User
+        from app.models.place import Place
+        from app.models.review import Review
+        from app.models.amenity import Amenity
+        from app.models.booking import Booking
+
+        self.user_repo    = SQLAlchemyRepository(User)
+        self.place_repo   = SQLAlchemyRepository(Place)
+        self.review_repo  = SQLAlchemyRepository(Review)
+        self.amenity_repo = SQLAlchemyRepository(Amenity)
+        self.booking_repo = SQLAlchemyRepository(Booking)
 
     # ── User ──────────────────────────────────────────────────────────────────
 
@@ -65,9 +63,7 @@ class HBnBFacade:
         if not self.get_user(place_data.get('owner_id', '')):
             raise ValueError('Owner not found.')
 
-        # Pop amenity_ids — not a Place field, handled separately
         amenity_ids = place_data.pop('amenity_ids', [])
-
         place = Place(**place_data)
 
         for amenity_id in amenity_ids:
@@ -82,10 +78,6 @@ class HBnBFacade:
         return self.place_repo.get(place_id)
 
     def get_all_places(self, **filters):
-        """
-        Optional keyword filters for future use, e.g.:
-            get_all_places(min_price=50, max_price=200)
-        """
         places = self.place_repo.get_all()
         if filters.get('min_price') is not None:
             places = [p for p in places if p.price >= filters['min_price']]
@@ -132,10 +124,6 @@ class HBnBFacade:
         return self.booking_repo.get(booking_id)
 
     def get_all_bookings(self, **filters):
-        """
-        Optional filters for future use, e.g.:
-            get_all_bookings(status='confirmed')
-        """
         bookings = self.booking_repo.get_all()
         if filters.get('status'):
             bookings = [b for b in bookings if b.status == filters['status']]
@@ -153,8 +141,6 @@ class HBnBFacade:
         if not booking:
             return
 
-        # Merge incoming data with existing values, then re-validate via a
-        # temporary Booking instance (reuses all model validation for free)
         merged = {
             'place_id':  booking.place_id,
             'user_id':   booking.user_id,
@@ -178,7 +164,6 @@ class HBnBFacade:
     # ── Internal helpers ──────────────────────────────────────────────────────
 
     def _check_overlap(self, new_booking, exclude_id: str = None):
-        """Raise ValueError if new_booking overlaps any active booking for the same place."""
         for b in self.booking_repo.get_all():
             if b.id == exclude_id:
                 continue
@@ -191,3 +176,4 @@ class HBnBFacade:
                     f"Dates conflict with an existing booking "
                     f"({b.check_in} → {b.check_out})."
                 )
+                
