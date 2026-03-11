@@ -1,15 +1,15 @@
 from app.persistence.repository import SQLAlchemyRepository
+from app.services.repositories.user_repository import UserRepository
 
 
 class HBnBFacade:
     def __init__(self):
-        from app.models.user import User
         from app.models.place import Place
         from app.models.review import Review
         from app.models.amenity import Amenity
         from app.models.booking import Booking
 
-        self.user_repo    = SQLAlchemyRepository(User)
+        self.user_repo    = UserRepository()
         self.place_repo   = SQLAlchemyRepository(Place)
         self.review_repo  = SQLAlchemyRepository(Review)
         self.amenity_repo = SQLAlchemyRepository(Amenity)
@@ -30,7 +30,7 @@ class HBnBFacade:
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email: str):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
 
     def get_all_users(self):
         return self.user_repo.get_all()
@@ -176,4 +176,3 @@ class HBnBFacade:
                     f"Dates conflict with an existing booking "
                     f"({b.check_in} → {b.check_out})."
                 )
-                

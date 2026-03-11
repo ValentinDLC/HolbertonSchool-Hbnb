@@ -1,8 +1,17 @@
 import re
 from app.models.base_model import BaseModel
-from app import bcrypt
+from app import db, bcrypt
+
 
 class User(BaseModel):
+    __tablename__ = 'users'
+
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name  = db.Column(db.String(50), nullable=False)
+    email      = db.Column(db.String(120), nullable=False, unique=True)
+    password   = db.Column(db.String(128), nullable=False)
+    is_admin   = db.Column(db.Boolean, default=False)
+
     def __init__(self, first_name: str = '', last_name: str = '',
                  email: str = '', is_admin: bool = False, **kwargs):
         super().__init__(**kwargs)
@@ -10,7 +19,6 @@ class User(BaseModel):
         self.last_name  = self._validate_name(last_name,  'last_name')
         self.email      = self._validate_email(email)
         self.is_admin   = bool(is_admin)
-        self.password   = None
 
     # ── Validators ────────────────────────────────────────────────────────
     @staticmethod
