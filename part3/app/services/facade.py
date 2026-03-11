@@ -21,7 +21,10 @@ class HBnBFacade:
 
     def create_user(self, user_data: dict):
         from app.models.user import User
+        password = user_data.pop('password', None)
         user = User(**user_data)
+        if password:
+            user.hash_password(password)
         self.user_repo.add(user)
         return user
 

@@ -1,17 +1,8 @@
 import re
 from app.models.base_model import BaseModel
-
+from app import bcrypt
 
 class User(BaseModel):
-    """
-    Represents an application user.
-
-    Accepts kwargs so it can be built directly from a request dict:
-        user = User(**user_data)
-    or via the factory:
-        user = User.from_dict(user_data)
-    """
-
     def __init__(self, first_name: str = '', last_name: str = '',
                  email: str = '', is_admin: bool = False, **kwargs):
         super().__init__(**kwargs)
@@ -19,9 +10,9 @@ class User(BaseModel):
         self.last_name  = self._validate_name(last_name,  'last_name')
         self.email      = self._validate_email(email)
         self.is_admin   = bool(is_admin)
+        self.password   = None
 
-    # ── Validators ────────────────────────────────────────────────────────────
-
+    # ── Validators ────────────────────────────────────────────────────────
     @staticmethod
     def _validate_name(value: str, field: str) -> str:
         if not value or len(value) > 50:
@@ -34,8 +25,16 @@ class User(BaseModel):
             raise ValueError("Invalid email address.")
         return email
 
-    # ── Serialisation ─────────────────────────────────────────────────────────
+    # ── Password ──────────────────────────────────────────────────────────
+    def hash_password(self, password: str):
+        """Hashes the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
+    def verify_password(self, password: str) -> bool:
+        """Verifies if the provided password matches the hashed password."""
+        return bcrypt.check_password_hash(self.password, password)
+
+    # ── Serialisation ─────────────────────────────────────────────────────
     def to_dict(self) -> dict:
         base = super().to_dict()
         base.update({
