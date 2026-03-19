@@ -11,8 +11,8 @@ class Booking(BaseModel):
     STATUS_CANCELLED = 'cancelled'
     VALID_STATUSES   = {STATUS_PENDING, STATUS_CONFIRMED, STATUS_CANCELLED}
 
-    place_id  = db.Column(db.String(36), nullable=False)
-    user_id   = db.Column(db.String(36), nullable=False)
+    place_id  = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
+    user_id   = db.Column(db.String(36), db.ForeignKey('users.id'),  nullable=False)
     check_in  = db.Column(db.Date, nullable=False)
     check_out = db.Column(db.Date, nullable=False)
     guests    = db.Column(db.Integer, nullable=False, default=1)

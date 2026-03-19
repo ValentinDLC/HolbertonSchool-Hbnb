@@ -12,6 +12,14 @@ class User(BaseModel):
     password   = db.Column(db.String(128), nullable=False)
     is_admin   = db.Column(db.Boolean, default=False)
 
+    # ── Relations ─────────────────────────────────────────────────────────
+    places   = db.relationship('Place',   backref='owner',  lazy=True,
+                                cascade='all, delete-orphan')
+    reviews  = db.relationship('Review',  backref='author', lazy=True,
+                                cascade='all, delete-orphan')
+    bookings = db.relationship('Booking', backref='user',   lazy=True,
+                                cascade='all, delete-orphan')
+
     def __init__(self, first_name: str = '', last_name: str = '',
                  email: str = '', is_admin: bool = False, **kwargs):
         super().__init__(**kwargs)
@@ -52,3 +60,4 @@ class User(BaseModel):
             'is_admin':   self.is_admin,
         })
         return base
+    
