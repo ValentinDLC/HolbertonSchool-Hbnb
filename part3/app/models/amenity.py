@@ -1,10 +1,11 @@
 from app.models.base_model import BaseModel
+from app import db
 
 
 class Amenity(BaseModel):
-    """
-    Represents a feature/amenity that can be attached to a Place.
-    """
+    __tablename__ = 'amenities'
+
+    name = db.Column(db.String(50), nullable=False)
 
     def __init__(self, name: str = '', **kwargs):
         super().__init__(**kwargs)

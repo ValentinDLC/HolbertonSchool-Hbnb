@@ -1,29 +1,29 @@
 from datetime import date
 from app.models.base_model import BaseModel
+from app import db
 
 
 class Booking(BaseModel):
-    """
-    Represents a reservation made by a user for a place.
-
-    Status lifecycle:  pending → confirmed
-                       pending → cancelled
-                    confirmed → cancelled
-    """
+    __tablename__ = 'bookings'
 
     STATUS_PENDING   = 'pending'
     STATUS_CONFIRMED = 'confirmed'
     STATUS_CANCELLED = 'cancelled'
     VALID_STATUSES   = {STATUS_PENDING, STATUS_CONFIRMED, STATUS_CANCELLED}
 
+    place_id  = db.Column(db.String(36), nullable=False)
+    user_id   = db.Column(db.String(36), nullable=False)
+    check_in  = db.Column(db.Date, nullable=False)
+    check_out = db.Column(db.Date, nullable=False)
+    guests    = db.Column(db.Integer, nullable=False, default=1)
+    status    = db.Column(db.String(20), nullable=False, default='pending')
+
     def __init__(self, place_id: str = '', user_id: str = '',
                  check_in: str = '', check_out: str = '',
                  guests: int = 1, **kwargs):
         super().__init__(**kwargs)
-
         self.check_in  = self._parse_date(check_in,  'check_in')
         self.check_out = self._parse_date(check_out, 'check_out')
-
         if self.check_out <= self.check_in:
             raise ValueError("check_out must be strictly after check_in.")
         if self.check_in < date.today():
@@ -34,14 +34,12 @@ class Booking(BaseModel):
             raise ValueError("place_id is required.")
         if not user_id:
             raise ValueError("user_id is required.")
-
         self.place_id = place_id
         self.user_id  = user_id
         self.guests   = int(guests)
         self.status   = self.STATUS_PENDING
 
-    # ── Helpers ───────────────────────────────────────────────────────────────
-
+    # ── Helpers ───────────────────────────────────────────────────────────
     @staticmethod
     def _parse_date(value, field: str) -> date:
         if isinstance(value, date):
@@ -55,8 +53,7 @@ class Booking(BaseModel):
     def nights(self) -> int:
         return (self.check_out - self.check_in).days
 
-    # ── Status transitions ────────────────────────────────────────────────────
-
+    # ── Status transitions ────────────────────────────────────────────────
     def confirm(self):
         if self.status != self.STATUS_PENDING:
             raise ValueError("Only pending bookings can be confirmed.")
@@ -67,8 +64,7 @@ class Booking(BaseModel):
             raise ValueError("Booking is already cancelled.")
         self.status = self.STATUS_CANCELLED
 
-    # ── Serialisation ─────────────────────────────────────────────────────────
-
+    # ── Serialisation ─────────────────────────────────────────────────────
     def to_dict(self) -> dict:
         base = super().to_dict()
         base.update({

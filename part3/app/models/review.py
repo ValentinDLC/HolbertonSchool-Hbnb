@@ -1,15 +1,18 @@
 from app.models.base_model import BaseModel
+from app import db
 
 
 class Review(BaseModel):
-    """
-    Represents a review left by a user for a place.
-    """
+    __tablename__ = 'reviews'
+
+    text     = db.Column(db.Text, nullable=False)
+    rating   = db.Column(db.Integer, nullable=False)
+    place_id = db.Column(db.String(36), nullable=False)
+    user_id  = db.Column(db.String(36), nullable=False)
 
     def __init__(self, text: str = '', rating: int = 0,
                  place_id: str = '', user_id: str = '', **kwargs):
         super().__init__(**kwargs)
-
         if not text:
             raise ValueError("Review text cannot be empty.")
         if not (1 <= int(rating) <= 5):
@@ -18,7 +21,6 @@ class Review(BaseModel):
             raise ValueError("place_id is required.")
         if not user_id:
             raise ValueError("user_id is required.")
-
         self.text     = text
         self.rating   = int(rating)
         self.place_id = place_id
