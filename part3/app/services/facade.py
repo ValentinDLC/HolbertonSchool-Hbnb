@@ -36,7 +36,33 @@ class HBnBFacade:
         return self.user_repo.get_all()
 
     def update_user(self, user_id: str, data: dict):
-        self.user_repo.update(user_id, data)
+        """
+        Met à jour un utilisateur.
+        - Le mot de passe est re-hashé si fourni.
+        - is_admin ne peut être modifié QUE si la clé est explicitement
+          présente dans data (réservé à l'endpoint admin PATCH /<id>/admin).
+          Depuis users.py PUT, la clé est bloquée avant d'arriver ici.
+        """
+        user = self.user_repo.get(user_id)
+        if not user:
+            return
+
+        # Hash du mot de passe si fourni
+        if 'password' in data:
+            password = data.pop('password')
+            user.hash_password(password)
+
+        # Mise à jour des champs autorisés
+        SAFE_FIELDS = {'first_name', 'last_name', 'email', 'is_admin'}
+        for key, value in data.items():
+            if key in SAFE_FIELDS and hasattr(user, key):
+                setattr(user, key, value)
+
+        from datetime import datetime
+        user.updated_at = datetime.utcnow()
+
+        from app import db
+        db.session.commit()
 
     # ── Amenity ───────────────────────────────────────────────────────────────
 
@@ -158,6 +184,9 @@ class HBnBFacade:
         from datetime import datetime
         booking.updated_at = datetime.utcnow()
 
+        from app import db
+        db.session.commit()
+
     def delete_booking(self, booking_id: str):
         self.booking_repo.delete(booking_id)
 
@@ -176,3 +205,4 @@ class HBnBFacade:
                     f"Dates conflict with an existing booking "
                     f"({b.check_in} → {b.check_out})."
                 )
+                
